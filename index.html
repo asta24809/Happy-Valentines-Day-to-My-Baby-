@@ -20,7 +20,8 @@
             text-align: center;
             position: relative;
             z-index: 5;
-            margin-top: -5vh;           /* 大幅減少負值，讓羊回到畫面中央偏上 */
+            margin-top: 0;              /* 改成 0vh，讓內容從頂部開始計算 */
+            padding-top: 8vh;           /* 整體往下推一點，避免頂到邊緣 */
         }
         .sheep-image {
             width: 100vw;
@@ -30,7 +31,7 @@
             transition: transform 0.12s ease;
         }
         .to-stalker {
-            margin-top: -60px;
+            margin-top: -50px;          /* 稍微調整，讓文字貼近羊但不壓太緊 */
             font-size: 9vw;
             max-font-size: 52px;
             color: #c2185b;
@@ -61,14 +62,14 @@
             font-weight: 600;
             white-space: nowrap;
             pointer-events: none;
-            z-index: 20;                /* 確保覆蓋在羊上面 */
+            z-index: 20;
             opacity: 0.92;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
             animation: danmuMove linear forwards;
         }
         @keyframes danmuMove {
             0%   { transform: translateX(100vw); opacity: 1; }
-            100% { transform: translateX(-100%); opacity: 0.3; }  /* 淡出更自然 */
+            100% { transform: translateX(-100%); opacity: 0.3; }
         }
     </style>
 </head>
@@ -93,6 +94,7 @@
             "Happy one year anniversary!",
             "Thank you for everything",
             "ლ(°◕‵ƹ′◕ლ)",
+            "We are couples in all universe",  // 新增這句
             "😘"
         ];
         let clickCount = 0;
@@ -104,7 +106,6 @@
         const openMouth = "sheep_open.png";
 
         sheepImg.addEventListener('click', () => {
-            // 原有功能
             bleat.currentTime = 0;
             bleat.play().catch(() => {});
 
@@ -124,7 +125,6 @@
                 sheepImg.style.transform = "scale(1)";
             }, 800);
 
-            // 彈幕功能
             const text = messages[clickCount % messages.length];
             clickCount++;
 
@@ -132,16 +132,14 @@
             danmu.classList.add('danmu');
             danmu.innerHTML = text;
 
-            // 全屏高度範圍：從很上面到很下面
+            // 全屏高度範圍
             const topPos = 5 + Math.random() * 80;  // 5vh ~ 85vh
             danmu.style.top = `${topPos}vh`;
 
-            // 飄過時間隨機 5.5 ~ 9 秒
             const duration = 5.5 + Math.random() * 3.5;
             danmu.style.animationDuration = `${duration}s`;
 
-            // 起始位置稍隨機，讓彈幕不那麼整齊
-            const offset = Math.random() * 30 - 15;  // -15vw ~ +15vw
+            const offset = Math.random() * 30 - 15;
             danmu.style.transform = `translateX(calc(100vw + ${offset}vw))`;
 
             document.body.appendChild(danmu);
@@ -153,5 +151,6 @@
     </script>
 </body>
 </html>
+
 
 
