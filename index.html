@@ -24,24 +24,24 @@
             text-align: center;
             position: relative;
             z-index: 5;
-            margin-top: -22vh;          /* 再往上挪一些，配合更大羊圖 */
+            margin-top: -22vh;
         }
         .sheep-image {
-            width: 100vw;               /* 再放大一倍（從 70vw → 100vw） */
-            max-width: 680px;           /* 手機上不會過分撐爆 */
+            width: 100vw;
+            max-width: 680px;
             height: auto;
             cursor: pointer;
             transition: transform 0.12s ease;
         }
         .to-stalker {
-            margin-top: -70px;          /* 跟著羊調整位置 */
+            margin-top: -70px;
             font-size: 9vw;
             max-font-size: 52px;
             color: #c2185b;
             font-family: 'Sacramento', cursive;
             letter-spacing: 1px;
             z-index: 6;
-            pointer-events: none;       /* 不再可點擊，純展示 */
+            pointer-events: none;
         }
         .heart {
             position: absolute;
@@ -63,6 +63,9 @@
             font-family: system-ui, sans-serif;
             font-weight: 600;
             white-space: nowrap;
+            max-width: 80vw;              /* 防止超長文字溢出邊界 */
+            overflow: hidden;
+            text-overflow: ellipsis;
             pointer-events: none;
             z-index: 20;
             animation: parabola 2.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
@@ -85,7 +88,9 @@
             color: #b00020;
             font-family: system-ui, sans-serif;
             font-weight: 500;
-            white-space: nowrap;
+            white-space: normal;          /* 允許自動換行 */
+            max-width: 70vw;              /* 堆疊文字最大寬度，防溢出 */
+            word-break: break-word;       /* 長詞強制斷行 */
             animation: settle 0.7s ease-out;
             z-index: 15;
             transform-origin: center bottom;
@@ -131,7 +136,6 @@
         const openMouth = "sheep_open.png";
 
         sheepImg.addEventListener('click', () => {
-            // 原有功能：羊叫、換圖、愛心
             bleat.currentTime = 0;
             bleat.play().catch(() => {});
 
@@ -151,7 +155,6 @@
                 sheepImg.style.transform = "scale(1)";
             }, 800);
 
-            // 新增功能：彈出甜蜜文字（原本 To: Stalker 的內容）
             const text = messages[clickCount % messages.length];
             clickCount++;
 
@@ -164,8 +167,8 @@
             const startY = sheepRect.top + sheepRect.height * 0.25;
 
             const dir = Math.random() > 0.5 ? 1 : -1;
-            const dx = dir * (8 + Math.random() * 20);
-            const up = -(20 + Math.random() * 20);
+            const dx = dir * (5 + Math.random() * 10);     // 左右偏移再縮小，集中在中間
+            const up = -(20 + Math.random() * 15);         // 上彈高度也稍減
 
             msg.style.left = `${startX}px`;
             msg.style.top = `${startY}px`;
@@ -181,9 +184,9 @@
                 piled.classList.add('piled-message');
                 piled.innerHTML = text;
 
-                const posX = 15 + Math.random() * 70;
-                const rotation = (Math.random() - 0.5) * 12;
-                const extraOffset = (Math.random() - 0.5) * 4;
+                const posX = 20 + Math.random() * 60;   // 堆疊左右範圍收窄到 20%~80%
+                const rotation = (Math.random() - 0.5) * 10; // 傾斜稍減
+                const extraOffset = (Math.random() - 0.5) * 3;
 
                 piled.style.left = `calc(${posX}% + ${extraOffset}vw)`;
                 piled.style.setProperty('--rot', `${rotation}deg`);
@@ -198,3 +201,4 @@
     </script>
 </body>
 </html>
+
