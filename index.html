@@ -20,7 +20,7 @@
             text-align: center;
             position: relative;
             z-index: 5;
-            margin-top: -22vh;
+            margin-top: -5vh;           /* 大幅減少負值，讓羊回到畫面中央偏上 */
         }
         .sheep-image {
             width: 100vw;
@@ -30,7 +30,7 @@
             transition: transform 0.12s ease;
         }
         .to-stalker {
-            margin-top: -70px;
+            margin-top: -60px;
             font-size: 9vw;
             max-font-size: 52px;
             color: #c2185b;
@@ -61,14 +61,14 @@
             font-weight: 600;
             white-space: nowrap;
             pointer-events: none;
-            z-index: 20;
-            opacity: 0.95;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* 增加可讀性 */
+            z-index: 20;                /* 確保覆蓋在羊上面 */
+            opacity: 0.92;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
             animation: danmuMove linear forwards;
         }
         @keyframes danmuMove {
             0%   { transform: translateX(100vw); opacity: 1; }
-            100% { transform: translateX(-100%); opacity: 1; }
+            100% { transform: translateX(-100%); opacity: 0.3; }  /* 淡出更自然 */
         }
     </style>
 </head>
@@ -104,7 +104,7 @@
         const openMouth = "sheep_open.png";
 
         sheepImg.addEventListener('click', () => {
-            // 原有功能：羊叫 + 換圖 + 愛心
+            // 原有功能
             bleat.currentTime = 0;
             bleat.play().catch(() => {});
 
@@ -124,7 +124,7 @@
                 sheepImg.style.transform = "scale(1)";
             }, 800);
 
-            // 彈幕功能：產生一句話從右往左飄
+            // 彈幕功能
             const text = messages[clickCount % messages.length];
             clickCount++;
 
@@ -132,26 +132,26 @@
             danmu.classList.add('danmu');
             danmu.innerHTML = text;
 
-            // 隨機垂直位置（多層彈幕效果）
-            const topPos = 10 + Math.random() * 70;  // 10% ~ 80% 高度範圍
+            // 全屏高度範圍：從很上面到很下面
+            const topPos = 5 + Math.random() * 80;  // 5vh ~ 85vh
             danmu.style.top = `${topPos}vh`;
 
-            // 隨機飄過時間（5.5 ~ 8.5 秒），讓不同句子速度略有差異
-            const duration = 5.5 + Math.random() * 3;
+            // 飄過時間隨機 5.5 ~ 9 秒
+            const duration = 5.5 + Math.random() * 3.5;
             danmu.style.animationDuration = `${duration}s`;
 
-            // 稍微隨機左右起始偏移，讓不那麼整齊
-            const offset = Math.random() * 20 - 10;  // -10vw ~ +10vw
+            // 起始位置稍隨機，讓彈幕不那麼整齊
+            const offset = Math.random() * 30 - 15;  // -15vw ~ +15vw
             danmu.style.transform = `translateX(calc(100vw + ${offset}vw))`;
 
             document.body.appendChild(danmu);
 
-            // 動畫結束後自動移除
             setTimeout(() => {
                 danmu.remove();
-            }, duration * 1000 + 500);
+            }, duration * 1000 + 1000);
         });
     </script>
 </body>
 </html>
+
 
