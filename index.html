@@ -13,10 +13,6 @@
             padding: 0;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             touch-action: manipulation;
         }
@@ -55,49 +51,24 @@
         @keyframes float {
             to { opacity: 0; transform: translateY(-60px) scale(0.8); }
         }
-        .message {
+        /* 彈幕樣式 */
+        .danmu {
             position: absolute;
-            font-size: 5vw;
-            max-font-size: 28px;
+            font-size: 4.8vw;
+            max-font-size: 26px;
             color: #b00020;
             font-family: system-ui, sans-serif;
             font-weight: 600;
             white-space: nowrap;
-            max-width: 80vw;              /* 防止超長文字溢出邊界 */
-            overflow: hidden;
-            text-overflow: ellipsis;
             pointer-events: none;
             z-index: 20;
-            animation: parabola 2.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            opacity: 0.95;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* 增加可讀性 */
+            animation: danmuMove linear forwards;
         }
-        @keyframes parabola {
-            0%   { opacity: 1; transform: scale(1) translate(0, 0); }
-            45%  { transform: scale(1.06) translate(var(--dx), var(--up)); }
-            100% { opacity: 1; transform: scale(1) translate(var(--dx), 95vh); }
-        }
-        .bottom-pile {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 15;
-        }
-        .piled-message {
-            position: absolute;
-            font-size: 3.2vw;
-            max-font-size: 18px;
-            color: #b00020;
-            font-family: system-ui, sans-serif;
-            font-weight: 500;
-            white-space: normal;          /* 允許自動換行 */
-            max-width: 70vw;              /* 堆疊文字最大寬度，防溢出 */
-            word-break: break-word;       /* 長詞強制斷行 */
-            animation: settle 0.7s ease-out;
-            z-index: 15;
-            transform-origin: center bottom;
-        }
-        @keyframes settle {
-            0% { transform: translateY(50px) scale(0.88) rotate(0deg); opacity: 0.5; }
-            100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; }
+        @keyframes danmuMove {
+            0%   { transform: translateX(100vw); opacity: 1; }
+            100% { transform: translateX(-100%); opacity: 1; }
         }
     </style>
 </head>
@@ -111,8 +82,6 @@
         <img src="sheep_normal.png" alt="羊羊" class="sheep-image" id="sheepImg">
         <div class="to-stalker">To: Stalker</div>
     </div>
-
-    <div class="bottom-pile" id="pile"></div>
 
     <script>
         const messages = [
@@ -130,12 +99,12 @@
 
         const sheepImg = document.getElementById('sheepImg');
         const bleat = document.getElementById('bleat');
-        const pile = document.getElementById('pile');
 
         const normal = "sheep_normal.png";
         const openMouth = "sheep_open.png";
 
         sheepImg.addEventListener('click', () => {
+            // 原有功能：羊叫 + 換圖 + 愛心
             bleat.currentTime = 0;
             bleat.play().catch(() => {});
 
@@ -155,48 +124,32 @@
                 sheepImg.style.transform = "scale(1)";
             }, 800);
 
+            // 彈幕功能：產生一句話從右往左飄
             const text = messages[clickCount % messages.length];
             clickCount++;
 
-            const msg = document.createElement('div');
-            msg.classList.add('message');
-            msg.innerHTML = text;
+            const danmu = document.createElement('div');
+            danmu.classList.add('danmu');
+            danmu.innerHTML = text;
 
-            const sheepRect = sheepImg.getBoundingClientRect();
-            const startX = sheepRect.left + sheepRect.width * (0.35 + Math.random() * 0.3);
-            const startY = sheepRect.top + sheepRect.height * 0.25;
+            // 隨機垂直位置（多層彈幕效果）
+            const topPos = 10 + Math.random() * 70;  // 10% ~ 80% 高度範圍
+            danmu.style.top = `${topPos}vh`;
 
-            const dir = Math.random() > 0.5 ? 1 : -1;
-            const dx = dir * (5 + Math.random() * 10);     // 左右偏移再縮小，集中在中間
-            const up = -(20 + Math.random() * 15);         // 上彈高度也稍減
+            // 隨機飄過時間（5.5 ~ 8.5 秒），讓不同句子速度略有差異
+            const duration = 5.5 + Math.random() * 3;
+            danmu.style.animationDuration = `${duration}s`;
 
-            msg.style.left = `${startX}px`;
-            msg.style.top = `${startY}px`;
-            msg.style.setProperty('--dx', `${dx}vw`);
-            msg.style.setProperty('--up', `${up}vh`);
+            // 稍微隨機左右起始偏移，讓不那麼整齊
+            const offset = Math.random() * 20 - 10;  // -10vw ~ +10vw
+            danmu.style.transform = `translateX(calc(100vw + ${offset}vw))`;
 
-            document.body.appendChild(msg);
+            document.body.appendChild(danmu);
 
+            // 動畫結束後自動移除
             setTimeout(() => {
-                msg.remove();
-
-                const piled = document.createElement('div');
-                piled.classList.add('piled-message');
-                piled.innerHTML = text;
-
-                const posX = 20 + Math.random() * 60;   // 堆疊左右範圍收窄到 20%~80%
-                const rotation = (Math.random() - 0.5) * 10; // 傾斜稍減
-                const extraOffset = (Math.random() - 0.5) * 3;
-
-                piled.style.left = `calc(${posX}% + ${extraOffset}vw)`;
-                piled.style.setProperty('--rot', `${rotation}deg`);
-
-                const stackCount = pile.children.length;
-                const base = 1.5;
-                piled.style.bottom = `${base + stackCount * 2.8}vh`;
-
-                pile.appendChild(piled);
-            }, 2800);
+                danmu.remove();
+            }, duration * 1000 + 500);
         });
     </script>
 </body>
