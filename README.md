@@ -1,6 +1,1 @@
-Hi baby.
-  Happly one year anniversary! 
-  I love you. 
-  Love you.
-  Love you.
-  LOOOOOOOVE YOU!!!!
+Hi baby. You know I always feel so happy to plan or imagine our future together. Feels like I have a purpose to work on, have a place to go, and have a clear, pretty future with you. The whole year is fantastic, but this is not even the best part yet./n /t \n \t Dating you makes me feel I became a better version of myself, and I enjoy this process. Ok enough for cringe words! 
