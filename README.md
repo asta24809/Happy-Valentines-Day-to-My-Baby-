@@ -1,1 +1,1 @@
-Maybe the sheep Steve from the other universe haven't met sheep Asta, and he'll come to our universe and kiss me in my dream tonight. Hope Steves and Astas in all universes have fun tonight, you too!
+Maybe the sheep Asta from the other universe haven't met sheep Steve, and she'll come to our universe and kiss you in your dream tonight. Hope Steves and Astas in all universes have fun tonight, you too!
