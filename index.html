@@ -24,17 +24,17 @@
             text-align: center;
             position: relative;
             z-index: 5;
-            margin-top: -8vh;
+            margin-top: -18vh;          /* 整體內容往上挪更多，讓羊更居中偏上 */
         }
         .sheep-image {
-            width: 45vw;
-            max-width: 400px;
+            width: 70vw;                /* 放大到約原來的 2.5 倍（從 45vw → 70vw） */
+            max-width: 520px;           /* 手機上不會過大 */
             height: auto;
             cursor: pointer;
             transition: transform 0.12s ease;
         }
         .to-stalker {
-            margin-top: -50px;
+            margin-top: -60px;          /* 文字跟著羊往上貼近 */
             font-size: 9vw;
             max-font-size: 52px;
             cursor: pointer;
@@ -45,15 +45,15 @@
         }
         .heart {
             position: absolute;
-            font-size: 9vw;
-            max-font-size: 55px;
+            font-size: 8vw;
+            max-font-size: 50px;
             color: red;
             pointer-events: none;
             animation: float 1.2s ease-out forwards;
             z-index: 10;
         }
         @keyframes float {
-            to { opacity: 0; transform: translateY(-80px) scale(0.8); }
+            to { opacity: 0; transform: translateY(-60px) scale(0.8); } /* 上飄範圍變小 */
         }
         .message {
             position: absolute;
@@ -141,8 +141,8 @@
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = Math.random() * 40 + 'vh';
+            heart.style.left = (45 + Math.random() * 10) + 'vw';   // 左右範圍縮小到中間 45%~55%
+            heart.style.top = (15 + Math.random() * 20) + 'vh';    // 上方範圍縮小
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 1500);
 
@@ -161,12 +161,12 @@
             msg.innerHTML = text;
 
             const sheepRect = sheepImg.getBoundingClientRect();
-            const startX = sheepRect.left + sheepRect.width * (0.3 + Math.random() * 0.4);
+            const startX = sheepRect.left + sheepRect.width * (0.35 + Math.random() * 0.3); // 更靠近羊中心
             const startY = sheepRect.top + sheepRect.height * 0.25;
 
             const dir = Math.random() > 0.5 ? 1 : -1;
-            const dx = dir * (15 + Math.random() * 45);
-            const up = -(35 + Math.random() * 35);
+            const dx = dir * (8 + Math.random() * 20);     // 左右偏移幅度減半，更集中
+            const up = -(20 + Math.random() * 20);         // 上彈高度減小，更靠近中間
 
             msg.style.left = `${startX}px`;
             msg.style.top = `${startY}px`;
@@ -182,9 +182,9 @@
                 piled.classList.add('piled-message');
                 piled.innerHTML = text;
 
-                const posX = 10 + Math.random() * 80;
-                const rotation = (Math.random() - 0.5) * 16;
-                const extraOffset = (Math.random() - 0.5) * 6;
+                const posX = 15 + Math.random() * 70;   // 堆疊也更集中中間
+                const rotation = (Math.random() - 0.5) * 12; // 傾斜幅度稍減
+                const extraOffset = (Math.random() - 0.5) * 4;
 
                 piled.style.left = `calc(${posX}% + ${extraOffset}vw)`;
                 piled.style.setProperty('--rot', `${rotation}deg`);
