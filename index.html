@@ -17,11 +17,14 @@
             touch-action: manipulation;
         }
         .container {
+            position: absolute;
+            top: 42%;               /* 42~48% 之間微調，看起來最自然 */
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            position: relative;
             z-index: 5;
-            margin-top: 0;              /* 改成 0vh，讓內容從頂部開始計算 */
-            padding-top: 8vh;           /* 整體往下推一點，避免頂到邊緣 */
+            width: 100%;           /* 整體往下推一點，避免頂到邊緣 */
+            
         }
         .sheep-image {
             width: 100vw;
@@ -152,6 +155,7 @@
     </script>
 </body>
 </html>
+
 
 
 
